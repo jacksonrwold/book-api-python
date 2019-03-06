@@ -5,7 +5,7 @@ from flask_heroku import Heroku
 
 app = Flask(__name__)
 CORS(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = ''
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://bijxwcyjcoptsd:61eaff35b019360884a9617ad04dd41a47918e02804ec6c8762c97134747761d@ec2-54-163-234-88.compute-1.amazonaws.com:5432/d9obuqceoutoms'
 
 heroku = Heroku(app)
 db = SQLAlchemy(app)
@@ -26,6 +26,18 @@ class Books(db.Model):
 @app.route('/')
 def home():
     return "<h1>Hi from Flask</h1>"
+
+@app.route('/book/input', methods=['POST'])
+def books_input():
+    if request.content_type == 'application/json'
+        post_data = request.get_json()
+        title = post_data.get('title')
+        author = post_data.get('author')
+        reg = Book(title, author)
+        db.session.add(reg)
+        db.session.commit()
+        return jsonify("Data Posted")
+    return jsonify('Something went wrong')
 
 if __name__ == '__main__':
     app.debug = True
