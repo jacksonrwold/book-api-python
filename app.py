@@ -16,6 +16,13 @@ class Books(db.Model):
     title =db.Column(db.String(120))
     author = db.Column(db.String(80))
 
+    def __init__(self, title, author):
+        self.title = title
+        self.author = author
+
+    def __repr__(self):
+        return '<Title %r>' % self.title
+
 @app.route('/')
 def home():
     return "<h1>Hi from Flask</h1>"
