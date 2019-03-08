@@ -12,7 +12,7 @@ db = SQLAlchemy(app)
 
 class Books(db.Model):
     __tablename__ = "books"
-    id = db.column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     title =db.Column(db.String(120))
     author = db.Column(db.String(80))
 
@@ -27,17 +27,22 @@ class Books(db.Model):
 def home():
     return "<h1>Hi from Flask</h1>"
 
-@app.route('/book/input', methods=['POST'])
+@app.route('/books/input', methods=['POST'])
 def books_input():
-    if request.content_type == 'application/json'
+    if request.content_type == 'application/json':
         post_data = request.get_json()
         title = post_data.get('title')
         author = post_data.get('author')
-        reg = Book(title, author)
+        reg = Books(title, author)
         db.session.add(reg)
         db.session.commit()
         return jsonify("Data Posted")
     return jsonify('Something went wrong')
+
+@app.route('/books', methods=['GET'])
+def return_books():
+    all_books = db.session.query(Books.id, Books.title, Books.author).all()
+    return jsonify(all_books)
 
 if __name__ == '__main__':
     app.debug = True
